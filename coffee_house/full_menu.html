@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full Menu - Coffee House</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #2e2e2e;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .full-menu {
+      text-align: center;
+      padding: 20px;
+      min-height: 100%;
+      position: relative;
+    }
+    .menu-gallery {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      gap: 15px;
+      padding-bottom: 60px;
+    }
+    .menu-item {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .menu-item:hover {
+      transform: scale(1.03);
+    }
+    .menu-item img {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .menu-item .item-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 10px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background-color: #ff7f50;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #ff6347;
+    }
+    
+    /* Modal styles for zoomed image */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      overflow: auto;
+    }
+    .modal-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    .modal-img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .item-info {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      background: rgba(0,0,0,0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="full-menu">
+    <h1>Our Full Menu</h1>
+    <div class="menu-gallery">
+      <div class="menu-item" onclick="openModal('images/image4.jpg', 'Espresso', '$3.50 - Our signature espresso blend with rich crema')">
+        <img src="images/image4.jpg" alt="Espresso" />
+        <div class="item-label">Espresso - $3.50</div>
+      </div>
+      <div class="menu-item" onclick="openModal('images/image5.jpg', 'Cappuccino', '$4.50 - Perfect balance of espresso, steamed milk and foam')">
+        <img src="images/image5.jpg" alt="Cappuccino" />
+        <div class="item-label">Cappuccino - $4.50</div>
+      </div>
+      <div class="menu-item" onclick="openModal('images/image6.jpg', 'Latte', '$4.75 - Smooth espresso with velvety steamed milk')">
+        <img src="images/image6.jpg" alt="Latte" />
+        <div class="item-label">Latte - $4.75</div>
+      </div>
+      <div class="menu-item" onclick="openModal('images/image7.jpg', 'Cold Brew', '$4.25 - Slow-steeped for 18 hours for maximum flavor')">
+        <img src="images/image7.jpg" alt="Cold Brew" />
+        <div class="item-label">Cold Brew - $4.25</div>
+      </div>
+      <!-- Add more menu items as needed -->
+    </div>
+    <button onclick="window.location.href='index.html'">Back to Home</button>
+  </div>
+
+  <!-- The Modal -->
+  <div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+      <img id="zoomedImage" class="modal-img" />
+      <div id="itemInfo" class="item-info"></div>
+    </div>
+  </div>
+
+  <script>
+    // Get the modal
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("zoomedImage");
+    const itemInfo = document.getElementById("itemInfo");
+
+    // Function to open the modal with clicked image
+    function openModal(imgSrc, title, description) {
+      modal.style.display = "block";
+      modalImg.src = imgSrc;
+      itemInfo.innerHTML = `<h2>${title}</h2><p>${description}</p>`;
+      
+      // Prevent scrolling when modal is open
+      document.body.style.overflow = "hidden";
+    }
+
+    // Function to close the modal
+    function closeModal() {
+      modal.style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+
+    // Close modal when clicking outside the image
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    // Close modal with Escape key
+    document.onkeydown = function(evt) {
+      evt = evt || window.event;
+      if (evt.key === "Escape") {
+        closeModal();
+      }
+    };
+  </script>
+</body>
+</html>

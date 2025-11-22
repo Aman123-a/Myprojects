@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee House - Menu</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Menu Section */
+        .menu {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+                        url('images/coffee-beans-bg.jpg') center/cover no-repeat fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Playfair Display', serif;
+
+        }
+        
+        .menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        
+        .menu-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+        
+        .menu-left {
+            width: 50%;
+            padding: 3rem;
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-heading {
+            font-size: 1.8rem;
+            color: #c49b63;
+            margin-bottom: 1.5rem;
+            font-family: 'Great Vibes', cursive;
+            letter-spacing: 2px;
+        }
+        
+        .menu-left h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            color: #fff;
+            margin: 0 0 2rem 0;
+            line-height: 1.2;
+            letter-spacing: 3px;
+        }
+        
+        .menu-left p {
+            font-size: 1.1rem;
+            color: #ddd;
+            max-width: 80%;
+            margin: 0 auto 3rem auto;
+            line-height: 1.8;
+        }
+        
+        .menu-btn {
+            width: 18rem;
+            height: 5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            background-color: transparent;
+            border: 2px solid #c49b63;
+            color: #c49b63;
+            text-transform: uppercase;
+            transition: all 0.4s;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-btn:hover {
+            background-color: #c49b63;
+            color: #111;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .menu-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .menu-right {
+            width: 50%;
+            padding: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .menu-right-images {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .menu-img-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 5px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s;
+        }
+        
+        .menu-img-wrapper:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .menu-right-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+        }
+        
+        .menu-img-wrapper:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Decorative Elements */
+        .menu-divider {
+            width: 100px;
+            height: 3px;
+            background: #c49b63;
+            margin: 1.5rem auto;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .menu-left h1 {
+                font-size: 3rem;
+            }
+            
+            .menu-img-wrapper {
+                height: 200px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .menu-content {
+                flex-direction: column;
+            }
+            
+            .menu-left,
+            .menu-right {
+                width: 100%;
+                padding: 2rem;
+            }
+            
+            .menu-left {
+                margin-bottom: 2rem;
+            }
+            
+            .menu-left p {
+                max-width: 90%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-left h1 {
+                font-size: 2.5rem;
+            }
+            
+            .main-heading {
+                font-size: 1.5rem;
+            }
+            
+            .menu-left p {
+                font-size: 1rem;
+            }
+            
+            .menu-btn {
+                width: 15rem;
+                height: 4.5rem;
+                font-size: 1rem;
+            }
+            
+            .menu-right-images {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+            
+            .menu-img-wrapper {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .menu-left h1 {
+                font-size: 2rem;
+            }
+            
+            .menu-img-wrapper {
+                height: 200px;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <section class="menu" id="mn">
+        <div class="menu-content">
+            <div class="menu-left">
+                <h3 class="main-heading">Discover</h3>
+                <div class="menu-divider"></div>
+                <h1>Our Exquisite Menu</h1>
+                <p>
+                    Experience the perfect blend of tradition and innovation with our carefully crafted beverages and gourmet treats. Each item is prepared with premium ingredients and served with passion.
+                </p>
+                <button type="button" class="menu-btn" onclick="window.location.href='full_menu.html'">
+                    Explore Full Menu
+                </button>
+            </div>
+            <div class="menu-right">
+                <div class="menu-right-images">
+                    <div class="menu-img-wrapper">
+                        <img src="images/image4.jpg" alt="Specialty Coffee" />
+                    </div>
+                    <div class="menu-img-wrapper">
+                        <img src="images/image5.jpg" alt="Artisan Pastries" />
+                    </div>
+                    <div class="menu-img-wrapper">
+                        <img src="images/image6.jpg" alt="Signature Drinks" />
+                    </div>
+                    <div class="menu-img-wrapper">
+                        <img src="images/image7.jpg" alt="Gourmet Sandwiches" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

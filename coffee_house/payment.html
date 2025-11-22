@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Payment Section */
+        .payment {
+            padding: 6rem 5%;
+            background-color: #f9f3ee;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .payment-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .payment-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .payment-header h1 {
+            font-size: 2.2rem;
+            margin: 0.5rem 0;
+            color: #2a2a2a;
+        }
+        
+        .payment-header p {
+            color: #666;
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .payment-card {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .payment-card i {
+            font-size: 2.5rem;
+            color: #555;
+        }
+        
+        .payment-form {
+            margin-top: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #c7a17a;
+            outline: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .payment-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: #c7a17a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .payment-btn:hover {
+            background: #b58e65;
+        }
+        
+        .payment-security {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+            justify-content: center;
+        }
+        
+        .payment-security i {
+            color: #4CAF50;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        
+        /* Success Message */
+        .payment-success {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-success h2 {
+            color: #2a2a2a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .payment-success p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .continue-shopping {
+            padding: 0.8rem 1.5rem;
+            background: #c7a17a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .continue-shopping:hover {
+            background: #b58e65;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .payment-container {
+                padding: 2rem;
+            }
+            
+            .payment-card {
+                gap: 1rem;
+            }
+            
+            .payment-card i {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Payment Section -->
+    <section class="payment" id="payment">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h3 class="main-heading">Secure Payment</h3>
+                <h1>Complete Your Order</h1>
+                <p>We accept all major credit/debit cards and digital wallets</p>
+            </div>
+            
+            <div class="payment-methods">
+                <div class="payment-card">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-brands fa-cc-amex"></i>
+                    <i class="fa-brands fa-cc-paypal"></i>
+                </div>
+            </div>
+            
+            <form class="payment-form" id="paymentForm">
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    <div class="error-message" id="cardNumberError">Please enter a valid card number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Name on Card</label>
+                    <input type="text" id="cardName" placeholder="Card Name" required>
+                    <div class="error-message" id="cardNameError">Please enter the name on card</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                        <div class="error-message" id="expiryDateError">Please enter a valid expiry date</div>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="3" required>
+                        <div class="error-message" id="cvvError">Please enter a valid CVV</div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="payment-btn" id="submitBtn">
+                    <i class="fa-solid fa-lock"></i> Pay Now
+                </button>
+                
+                <div class="payment-security">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Your payment is secured with 256-bit encryption</span>
+                </div>
+            </form>
+            
+            <!-- Success Message -->
+            <div class="payment-success" id="paymentSuccess">
+                <div class="success-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2>Payment Successful!</h2>
+                <p>Thank you for your order. Your payment has been processed.</p>
+                <div class="payment-details" id="paymentDetails"></div>
+                <button class="continue-shopping" id="continueBtn">Continue Shopping</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const paymentForm = document.getElementById('paymentForm');
+            const cardNumberInput = document.getElementById('cardNumber');
+            const cardNameInput = document.getElementById('cardName');
+            const expiryDateInput = document.getElementById('expiryDate');
+            const cvvInput = document.getElementById('cvv');
+            const submitBtn = document.getElementById('submitBtn');
+            const paymentSuccess = document.getElementById('paymentSuccess');
+            const paymentDetails = document.getElementById('paymentDetails');
+            const continueBtn = document.getElementById('continueBtn');
+            
+            // Format card number input
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '');
+                if (value.length > 0) {
+                    value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+                }
+                e.target.value = value;
+                validateCardNumber(value.replace(/\s/g, ''));
+            });
+            
+            // Format expiry date input
+            expiryDateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+                validateExpiryDate(value);
+            });
+            
+            // Only allow numbers in CVV
+            cvvInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+                validateCVV(e.target.value);
+            });
+            
+            // Validate card name
+            cardNameInput.addEventListener('blur', function() {
+                validateCardName(this.value);
+            });
+            
+            // Form submission
+            paymentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate all fields
+                const isCardValid = validateCardNumber(cardNumberInput.value.replace(/\s/g, ''));
+                const isNameValid = validateCardName(cardNameInput.value);
+                const isExpiryValid = validateExpiryDate(expiryDateInput.value);
+                const isCvvValid = validateCVV(cvvInput.value);
+                
+                if (isCardValid && isNameValid && isExpiryValid && isCvvValid) {
+                    processPayment();
+                }
+            });
+            
+            // Continue shopping button
+            continueBtn.addEventListener('click', function() {
+                paymentForm.reset();
+                paymentForm.style.display = 'block';
+                paymentSuccess.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Pay Now';
+            });
+            
+            // Validation functions
+            function validateCardNumber(number) {
+                const errorElement = document.getElementById('cardNumberError');
+                if (!number || number.length < 16) {
+                    errorElement.style.display = 'block';
+                    return false;
+                }
+                errorElement.style.display = 'none';
+                return true;
+            }
+            
+            function validateCardName(name) {
+                const errorElement = document.getElementById('cardNameError');
+                if (!name || name.trim().length < 2) {
+                    errorElement.style.display = 'block';
+                    return false;
+                }
+                errorElement.style.display = 'none';
+                return true;
+            }
+            
+            function validateExpiryDate(date) {
+                const errorElement = document.getElementById('expiryDateError');
+                if (!date || date.length < 5) {
+                    errorElement.style.display = 'block';
+                    return false;
+                }
+                
+                const [month, year] = date.split('/');
+                const currentYear = new Date().getFullYear() % 100;
+                const currentMonth = new Date().getMonth() + 1;
+                
+                if (month < 1 || month > 12) {
+                    errorElement.style.display = 'block';
+                    errorElement.textContent = 'Invalid month';
+                    return false;
+                }
+                
+                if (year < currentYear || (year == currentYear && month < currentMonth)) {
+                    errorElement.style.display = 'block';
+                    errorElement.textContent = 'Card expired';
+                    return false;
+                }
+                
+                errorElement.style.display = 'none';
+                return true;
+            }
+            
+            function validateCVV(cvv) {
+                const errorElement = document.getElementById('cvvError');
+                if (!cvv || cvv.length < 3) {
+                    errorElement.style.display = 'block';
+                    return false;
+                }
+                errorElement.style.display = 'none';
+                return true;
+            }
+            
+            // Process payment
+            function processPayment() {
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+                submitBtn.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    // Show success
+                    paymentForm.style.display = 'none';
+                    paymentSuccess.style.display = 'block';
+                    
+                    // Display payment details
+                    const last4 = cardNumberInput.value.slice(-4);
+                    paymentDetails.innerHTML = `
+                        <p><strong>Amount:</strong> 360.00</p>
+                        <p><strong>Card:</strong> **** **** **** ${last4}</p>
+                        <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                    `;
+                    
+                    // In a real app, you would submit to your backend here
+                    // fetch('process_payment.php', {
+                    //     method: 'POST',
+                    //     body: JSON.stringify({
+                    //         cardNumber: cardNumberInput.value.replace(/\s/g, ''),
+                    //         cardName: cardNameInput.value,
+                    //         expiryDate: expiryDateInput.value,
+                    //         cvv: cvvInput.value
+                    //     })
+                    // })
+                    // .then(response => response.json())
+                    // .then(data => {
+                    //     if (data.success) {
+                    //         show success
+                    //     } else {
+                    //         show error
+                    //     }
+                    // });
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

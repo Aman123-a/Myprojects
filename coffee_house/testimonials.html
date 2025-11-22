@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Testimonials - Coffee House</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f3ee;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .testimonials-header {
+            margin-bottom: 50px;
+        }
+
+        .main-heading {
+            font-size: 1.2rem;
+            color: #c7a17a;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .testimonials-header h1 {
+            font-size: 2.5rem;
+            margin: 0 0 20px;
+            color: #2a2a2a;
+        }
+
+        .testimonials-header p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Testimonial Cards */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .testimonial-text::before {
+            content: '"';
+            font-size: 4rem;
+            color: #c7a17a;
+            opacity: 0.2;
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            font-family: serif;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .testimonial-author img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 3px solid #c7a17a;
+        }
+
+        .author-info h4 {
+            margin: 0;
+            color: #2a2a2a;
+            font-size: 1.1rem;
+        }
+
+        .author-info p {
+            margin: 5px 0 0;
+            color: #c7a17a;
+            font-size: 0.9rem;
+        }
+
+        /* Rating Stars */
+        .rating {
+            color: #ffc107;
+            margin-bottom: 15px;
+        }
+
+        /* Navigation */
+        .back-button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 12px 25px;
+            background-color: #c7a17a;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #b58e65;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .testimonials-header h1 {
+                font-size: 2rem;
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="testimonials">
+            <div class="testimonials-header">
+                <span class="main-heading">Testimonials</span>
+                <h1>What Our Customers Say</h1>
+                <p>Hear from our valued customers about their experiences at Coffee House. We take pride in serving the best coffee and creating memorable moments.</p>
+            </div>
+
+            <div class="testimonial-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        The coffee here is absolutely amazing! I visit every morning before work. The atmosphere is so cozy and the staff is incredibly friendly.
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="images/client1.jpg" alt="Rohan Malhotra">
+                        <div class="author-info">
+                            <h4>Rohan Malhotra</h4>
+                            <p>Regular Customer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        I hosted a small meeting at Coffee House and was impressed by their service. The cappuccinos were perfect, and the space was ideal for our discussion.
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="images/client2.jpg" alt="Robin Singh">
+                        <div class="author-info">
+                            <h4>Robin Singh</h4>
+                            <p>Business Professional</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        Their cold brew is the best I've had in the city! I love how they source their beans ethically. Definitely my go-to spot for quality coffee.
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="images/client3.jpg" alt="Vicky Kaushal">
+                        <div class="author-info">
+                            <h4>Vicky Kaushal</h4>
+                            <p>Coffee Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 4 -->
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        The perfect place to work remotely. Fast WiFi, great coffee, and comfortable seating. The avocado toast is delicious too!
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="images/client4.jpg" alt="Ruchita Jain">
+                        <div class="author-info">
+                            <h4>Ruchita Jain</h4>
+                            <p>Freelancer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 5 -->
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        I bring all my friends here! The seasonal specials are always creative and tasty. The baristas really know their craft.
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="images/client5.jpg" alt="Kuhu Singh">
+                        <div class="author-info">
+                            <h4>Kuhu Singh</h4>
+                            <p>Local Guide</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </section>
+    </div>
+</body>
+</html>
