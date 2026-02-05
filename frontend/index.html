@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Traffic & Route System</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #e9eef3;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+
+        /*NAVBAR PANEL */
+        .panel {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            z-index: 9999;
+            padding: 15px 25px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .panel h2 {
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            margin-right: 20px;
+            min-width: 220px;
+        }
+
+        .panel input {
+            padding: 10px;
+            border-radius: 12px;
+            border: none;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.85);
+            width: 200px;
+        }
+
+        .panel button {
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 14px;
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 150, 255, 0.5);
+        }
+
+        #liveTraffic {
+            position: absolute;
+            top: 75px;
+            left: 25px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 14px;
+            z-index: 9999;
+            width: 250px;
+        }
+
+        /*ROUTE INSTRUCTION BOX */
+        #routeInfo {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 9999;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 240px;
+            line-height: 1.6;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<!-- NAVBAR PANEL -->
+<div class="panel">
+    <h2>AI Traffic Route System</h2>
+
+    <input type="text" id="startSearch" placeholder="Search start location...">
+    <button onclick="searchStartLocation()">📍 Start</button>
+
+    <input type="text" id="placeSearch" placeholder="Search destination...">
+    <button onclick="searchLocation()">🔍 Destination</button>
+
+    <button onclick="drawRoute()">🚗 Route</button>
+
+
+</div>
+
+<div id="liveTraffic">Click anywhere on map for Live Traffic...</div>
+
+<!--Route Instructions Box -->
+<div id="routeInfo">
+    <b>Route Information:</b><br>
+    🟢 <b>Green Line</b> = Shortest Route<br>
+    🔵 <b>Blue Lines</b> = Longer Alternative Routes<br>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    var map = L.map('map').setView([20.5937, 78.9629], 5);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+    }).addTo(map);
+
+    let startMarker = null;
+    let endMarker = null;
+    let routeLayers = [];   
+    let clickTrafficMarker = null;
+
+    function generateTraffic() {
+        const conditions = ["Smooth", "Moderate", "Heavy", "Severe Jam"];
+        const speeds = ["60+ km/h", "40-60 km/h", "20-40 km/h", "0-20 km/h"];
+        const signals = ["Red", "Yellow", "Green"];
+        let i = Math.floor(Math.random() * 4);
+
+        return {
+            condition: conditions[i],
+            speed: speeds[i],
+            signal: signals[Math.floor(Math.random() * 3)],
+            congestion: Math.floor(Math.random() * 100) + "%",
+            vehicles: Math.floor(Math.random() * 200) + 20
+        };
+    }
+
+    function searchStartLocation() {
+        const place = document.getElementById("startSearch").value;
+
+        if (!place.trim()) {
+            alert("Enter start location!");
+            return;
+        }
+
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${place}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.length === 0) return alert("Start location not found!");
+
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+
+                if (startMarker) map.removeLayer(startMarker);
+
+                startMarker = L.marker([lat, lon], { draggable: true })
+                    .addTo(map)
+                    .bindPopup("📍 Start Location")
+                    .openPopup();
+
+                startMarker.on("dragend", drawRoute);
+                map.setView([lat, lon], 14);
+            });
+    }
+
+    function searchLocation() {
+        const place = document.getElementById("placeSearch").value;
+
+        if (!place.trim()) {
+            alert("Enter a location!");
+            return;
+        }
+
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${place}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.length === 0) return alert("Destination not found!");
+
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+
+                if (endMarker) map.removeLayer(endMarker);
+
+                endMarker = L.marker([lat, lon], { draggable: true })
+                    .addTo(map)
+                    .bindPopup("📍 Destination")
+                    .openPopup();
+
+                endMarker.on("dragend", drawRoute);
+                map.setView([lat, lon], 14);
+            });
+    }
+
+    /*SHORTEST-PATH HIGHLIGHT SYSTEM */
+    function drawRoute() {
+        if (!startMarker || !endMarker) {
+            alert("Set both start and destination!");
+            return;
+        }
+
+        routeLayers.forEach(r => map.removeLayer(r));
+        routeLayers = [];
+
+        const start = startMarker.getLatLng();
+        const end = endMarker.getLatLng();
+
+        const url =
+            `https://router.project-osrm.org/route/v1/driving/` +
+            `${start.lng},${start.lat};${end.lng},${end.lat}` +
+            `?overview=full&geometries=geojson&alternatives=true`;
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.routes || data.routes.length === 0) {
+                    alert("No route found.");
+                    return;
+                }
+
+                let shortest = data.routes[0];
+                let shortestIndex = 0;
+
+                data.routes.forEach((r, i) => {
+                    if (r.distance < shortest.distance) {
+                        shortest = r;
+                        shortestIndex = i;
+                    }
+                });
+
+                data.routes.forEach((route, i) => {
+                    const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
+
+                    let color = (i === shortestIndex) ? "green" : "blue";
+                    let weight = (i === shortestIndex) ? 6 : 3;
+
+                    let poly = L.polyline(coords, {
+                        color: color,
+                        weight: weight,
+                        opacity: 0.9
+                    }).addTo(map);
+
+                    poly.bindPopup(
+                        `<b>${i === shortestIndex ? "Shortest Route" : "Alternative Route"}</b><br>
+                         Distance: ${(route.distance / 1000).toFixed(2)} km<br>
+                         Time: ${(route.duration / 60).toFixed(1)} min`
+                    );
+
+                    routeLayers.push(poly);
+                });
+
+                const shortestCoords = shortest.geometry.coordinates.map(c => [c[1], c[0]]);
+                const bounds = L.polyline(shortestCoords).getBounds();
+                map.fitBounds(bounds);
+            });
+    }
+
+    /* LIVE TRAFFIC */
+    map.on("click", function(e) {
+        const t = generateTraffic();
+
+        if (clickTrafficMarker) map.removeLayer(clickTrafficMarker);
+
+        clickTrafficMarker = L.marker(e.latlng)
+            .addTo(map)
+            .bindPopup(`
+                <b>📍 Selected Traffic Point</b><br>
+                <b>Condition:</b> ${t.condition}<br>
+                <b>Speed:</b> ${t.speed}<br>
+
+                <b>Signal:</b> 
+                ${t.signal === "Red" ? "🔴 <span style='color:red;'>Red</span>" :
+                  t.signal === "Yellow" ? "🟡 <span style='color:#c9a000;'>Yellow</span>" :
+                  "🟢 <span style='color:green;'>Green</span>"}<br><br>
+
+                <b>Congestion:</b> ${t.congestion}<br>
+                <b>Vehicles:</b> ${t.vehicles}
+            `)
+            .openPopup();
+
+        document.getElementById("liveTraffic").innerHTML = `
+            <b>📍 Selected Traffic Point</b><br>
+            <b>Condition:</b> ${t.condition}<br>
+            <b>Speed:</b> ${t.speed}<br>
+
+            <b>Signal:</b> 
+            ${t.signal === "Red" ? "🔴 <span style='color:red;'>Red</span>" :
+              t.signal === "Yellow" ? "🟡 <span style='color:#c9a000;'>Yellow</span>" :
+              "🟢 <span style='color:green;'>Green</span>"}<br><br>
+
+            <b>Congestion:</b> ${t.congestion}<br>
+            <b>Vehicles:</b> ${t.vehicles}
+        `;
+    });
+
+
+
+</script>
+
+</body>
+</html>

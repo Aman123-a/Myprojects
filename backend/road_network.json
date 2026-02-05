@@ -1,0 +1,15 @@
+{
+  "nodes": [
+    {"id": "A", "lat": 28.6139, "lon": 77.2090},
+    {"id": "B", "lat": 28.6145, "lon": 77.2105},
+    {"id": "C", "lat": 28.6155, "lon": 77.2120},
+    {"id": "D", "lat": 28.6165, "lon": 77.2140}
+  ],
+  "edges": [
+    {"from": "A", "to": "B", "distance": 150},
+    {"from": "B", "to": "C", "distance": 180},
+    {"from": "C", "to": "D", "distance": 200},
+    {"from": "A", "to": "C", "distance": 250},
+    {"from": "B", "to": "D", "distance": 220}
+  ]
+}
